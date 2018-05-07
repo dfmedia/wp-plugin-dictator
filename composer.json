@@ -1,0 +1,22 @@
+{
+  "name": "wp-plugin-dictator/wp-plugin-dictator",
+  "description": "Dictate which plugins should be active/inactive in a given environment",
+  "type": "wordpress-plugin",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Ryan Kanner"
+    }
+  ],
+  "config": {
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "WPQueueTasks\\": "src/"
+    },
+    "classmap": [
+      "src/"
+    ]
+  }
+}
