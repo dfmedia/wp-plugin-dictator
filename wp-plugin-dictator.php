@@ -118,6 +118,9 @@ if ( ! class_exists( 'WPPluginDictator' ) ) {
 			 * Instantiate classes here
 			 */
 
+			$dictator = new \WPPluginDictator\Dictate();
+			$dictator->run();
+
 			if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 				// Instantiate class for CLI commands here
 				//WP_CLI::add_command( 'plugin', '' );
