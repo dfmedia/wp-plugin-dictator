@@ -22,6 +22,7 @@ class ComposerStaticInitae2474ae5fa8b0c4bd3d248f5df2f730
 
     public static $classMap = array (
         'WPPluginDictator\\Admin' => __DIR__ . '/../..' . '/src/Admin.php',
+        'WPPluginDictator\\CLI' => __DIR__ . '/../..' . '/src/CLI.php',
         'WPPluginDictator\\Dictate' => __DIR__ . '/../..' . '/src/Dictate.php',
         'WPPluginDictator\\Utils' => __DIR__ . '/../..' . '/src/Utils.php',
     );

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WPPluginDictator\\Admin' => $baseDir . '/src/Admin.php',
+    'WPPluginDictator\\CLI' => $baseDir . '/src/CLI.php',
     'WPPluginDictator\\Dictate' => $baseDir . '/src/Dictate.php',
     'WPPluginDictator\\Utils' => $baseDir . '/src/Utils.php',
 );
