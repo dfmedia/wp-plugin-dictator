@@ -33,6 +33,7 @@ if ( ! class_exists( 'WPPluginDictator' ) ) {
 		 *
 		 * @access public
 		 * @return Object|WPPluginDictator
+		 * @throws exception
 		 */
 		public static function instance() {
 
@@ -117,13 +118,19 @@ if ( ! class_exists( 'WPPluginDictator' ) ) {
 			/**
 			 * Instantiate classes here
 			 */
-
 			$dictator = new \WPPluginDictator\Dictate();
 			$dictator->run();
 
+			add_action( 'init', function() {
+				if ( is_admin() ) {
+					$admin = new \WPPluginDictator\Admin();
+					$admin->setup();
+				}
+			} );
+
 			if ( defined( 'WP_CLI' ) && true === WP_CLI ) {
 				// Instantiate class for CLI commands here
-				//WP_CLI::add_command( 'plugin', '' );
+				WP_CLI::add_command( 'plugin dictate', '\WPPluginDictator\CLI' );
 			}
 
 		}
@@ -137,12 +144,14 @@ if ( ! class_exists( 'WPPluginDictator' ) ) {
  *
  * @return Object|WPPluginDictator Instance of the WPPluginDictator object
  * @access public
+ * @throws Exception
  */
 function wp_plugin_dictator_init() {
 
 	if ( did_action( 'plugins_loaded' ) ) {
 		throw new Exception( __( 'This plugin needs to be dropped in the wp-content/mu-plugins folder to work properly', 'wp-plugin-dictator' ) );
 	}
+
 	/**
 	 * Returns an instance of the WPPluginDictator class
 	 */
