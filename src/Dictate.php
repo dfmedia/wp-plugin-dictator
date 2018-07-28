@@ -409,7 +409,7 @@ class Dictate {
 	 *                            plugin is located
 	 * @param int    $priority    Priority number of when the plugin should be loaded. 1, 2, or 3.
 	 *
-	 * @access return void
+	 * @return void
 	 * @access public
 	 */
 	public static function add_custom_path_plugin( $plugin_slug, $path, $priority ) {
