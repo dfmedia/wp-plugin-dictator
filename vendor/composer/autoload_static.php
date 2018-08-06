@@ -9,12 +9,12 @@ class ComposerStaticInitae2474ae5fa8b0c4bd3d248f5df2f730
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
-            'WPQueueTasks\\' => 13,
+            'WPPluginDictator\\' => 17,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'WPQueueTasks\\' => 
+        'WPPluginDictator\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

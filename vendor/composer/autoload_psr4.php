@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'WPQueueTasks\\' => array($baseDir . '/src'),
+    'WPPluginDictator\\' => array($baseDir . '/src'),
 );
