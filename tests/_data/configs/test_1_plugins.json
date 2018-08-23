@@ -1,0 +1,5 @@
+{
+  "activate" : {
+    "test-plugin-1/test-plugin-1.php" : {},
+  }
+}

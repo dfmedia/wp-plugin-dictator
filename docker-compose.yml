@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  tests:
+    build:
+      context: "./bin"
+      args:
+        PHP_VERSION: "${PHP_VERSION:-7.2}"
+    depends_on:
+      - wppd_test
+    environment:
+      DB_SERVE_NAME: "wppd_test"
+    networks:
+      - "testing"
+    volumes:
+      - "test-suite:/tmp"
+      - "./:/project"
+  wppd_test:
+    stdin_open: true
+    tty: true
+    entrypoint:
+          [ "/bin/bash" ]
+    image: "wordpress:${WP_VERSION:-4.9.4}-php${PHP_VERSION:-7.2}-apache"
+    depends_on:
+      - mysql_test
+    environment:
+      WORDPRESS_DB_HOST: "mysql_test"
+      WORDPRESS_DB_NAME: "wppd_test"
+      WORDPRESS_DB_PASSWORD: "testing"
+      WORDPRESS_DB_USER: "root"
+    networks:
+      testing:
+        aliases:
+          - "wppd.test"
+    volumes:
+      - "./:/var/www/html/wp-content/mu-plugins/wp-plugin-dictator"
+  mysql_test:
+    image: "mariadb:10.2"
+    environment:
+      MYSQL_DATABASE: "wppd_test"
+      MYSQL_ROOT_PASSWORD: "testing"
+    networks:
+      - "testing"
+
+networks:
+  testing: {}
+
+volumes:
+  test-suite: {}

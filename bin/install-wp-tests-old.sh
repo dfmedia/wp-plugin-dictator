@@ -12,10 +12,9 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
 
-PLUGIN_DIR=$(pwd)
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
-DB_SERVE_NAME=${DB_SERVE_NAME-wppd_serve}
+WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wppd-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-/tmp/wppdwp/}
+DB_SERVE_NAME=wppdTests
 
 download() {
     if [ `which curl` ]; then
@@ -67,9 +66,6 @@ install_wp() {
 	fi
 
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
-
-	mkdir -p $WP_CORE_DIR/wp-content/plugins
-
 }
 
 install_test_suite() {
@@ -101,6 +97,25 @@ install_test_suite() {
 
 }
 
+move_plugins() {
+
+    if [ ! -d $WP_CORE_DIR/wp-content/custom-plugins ]; then
+		mkdir $WP_CORE_DIR/wp-content/custom-plugins
+	fi
+
+	cp -R tests/_data/plugins/test-plugin-1 $WP_CORE_DIR/wp-content/plugins/test-plugin-1
+	cp -R tests/_data/plugins/test-plugin-2 $WP_CORE_DIR/wp-content/plugins/test-plugin-2
+	cp -R tests/_data/plugins/test-plugin-3 $WP_CORE_DIR/wp-content/plugins/test-plugin-3
+	cp -R tests/_data/plugins/test-plugin-4 $WP_CORE_DIR/wp-content/plugins/test-plugin-4
+	cp -R tests/_data/plugins/test-plugin-5 $WP_CORE_DIR/wp-content/plugins/test-plugin-5
+	cp -R tests/_data/plugins/test-plugin-6 $WP_CORE_DIR/wp-content/plugins/test-plugin-6
+	cp -R tests/_data/plugins/test-plugin-7 $WP_CORE_DIR/wp-content/plugins/test-plugin-7
+	cp -R tests/_data/plugins/test-plugin-8 $WP_CORE_DIR/wp-content/custom-plugins/test-plugin-8
+	cp -R tests/_data/plugins/test-plugin-9 $WP_CORE_DIR/wp-content/custom-plugins/test-plugin-9
+	cp tests/_data/plugins/test-plugin-10.php $WP_CORE_DIR/wp-content/plugins/test-plugin-10.php
+
+}
+
 install_db() {
 
 	if [ ${SKIP_DB_CREATE} = "true" ]; then
@@ -123,57 +138,13 @@ install_db() {
 		fi
 	fi
 
+	# create database
+	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	mysqladmin create $DB_SERVE_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 
-    RESULT=`mysql -u $DB_USER --password="$DB_PASS" --skip-column-names -e "SHOW DATABASES LIKE '$DB_NAME'"$EXTRA`
-    if [ "$RESULT" != $DB_NAME ]; then
-        mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
-    fi
-
-    RESULT_2=`mysql -u $DB_USER --password="$DB_PASS" --skip-column-names -e "SHOW DATABASES LIKE '$DB_SERVE_NAME'"$EXTRA`
-    if [ "$RESULT_2" != $DB_SERVE_NAME ]; then
-        mysqladmin create $DB_SERVE_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
-    fi
-
-}
-
-# MySQL may not be ready when container starts; wait at most 30 seconds.
-wait_for_database_connection() {
-    set +ex
-    DB_TRIES=1
-    while [ $DB_TRIES -lt 15 ]; do
-        if curl --fail --show-error --silent "$DB_HOST:3306" > /dev/null 2>&1; then break; fi
-        echo "Waiting for database to be ready...."
-        sleep 2
-        DB_TRIES=$((DB_TRIES + 1))
-    done
-    set -ex
-}
-
-configure_wordpress() {
-
-    cd $WP_CORE_DIR
-    wp $WP_CLI_ARGS config create --dbname="$DB_SERVE_NAME" --dbuser=$DB_USER --dbpass="$DB_PASS" --dbhost="$DB_HOST" --skip-check --force=true
-    wp $WP_CLI_ARGS core install --url="http://wppd.test" --title="WP Plugin Dictator Tests" --admin_user=admin --admin_password=password --admin_email=admin@wppd.test --skip-email
-    wp $WP_CLI_ARGS rewrite structure '/%year%/%monthnum%/%postname%/'
-}
-
-activate_plugin() {
-
-
-    # Add this repo as a plugin to the install
-    if [ ! -d $WP_CORE_DIR/wp-content/mu-plugins/wp-plugin-dictator ]; then
-      ln -s $PLUGIN_DIR $WP_CORE_DIR/wp-content/mu-plugins/wp-plugin-dictator
-    fi
-
-    cd $WP_CORE_DIR
-
-    # Export the db for codeception to use
-    wp $WP_CLI_ARGS db export $PLUGIN_DIR/tests/_data/dump.sql
 }
 
 install_wp
 install_test_suite
-wait_for_database_connection
+# move_plugins
 install_db
-configure_wordpress
-activate_plugin
