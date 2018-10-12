@@ -63,7 +63,7 @@ class Admin {
 
 			$actions['required'] = '<span style="font-weight: bold;">' . __( 'Enabled by code', 'wp-plugin-dictator' )  . '</span>';
 
-		} elseif ( in_array( $plugin_basename, Dictate::get_recommended_plugins() ) ) {
+		} elseif ( in_array( $plugin_basename, Dictate::get_recommended_plugins(), true ) ) {
 
 			/**
 			 * Add text about being a recommended plugin
@@ -72,7 +72,7 @@ class Admin {
 
 		}
 
-		if ( in_array( $plugin_basename, Dictate::get_deactivated_plugins( 'required' ) ) ) {
+		if ( in_array( $plugin_basename, Dictate::get_deactivated_plugins( 'required' ), true ) ) {
 
 			/**
 			 * Don't allow plugins to be activated if they are force deactivated
