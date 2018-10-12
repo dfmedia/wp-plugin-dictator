@@ -338,7 +338,7 @@ class Dictate {
 
 			$dictated_plugins = array_unique( array_merge( $plugins, self::$required_plugins ) );
 
-			if ( ! empty( self::$deactivated_plugins ) ) {
+			if ( ! empty( self::$deactivated_plugins ) && is_array( self::$deactivated_plugins ) ) {
 				$dictated_plugins = array_diff( $dictated_plugins, self::$deactivated_plugins );
 			}
 
