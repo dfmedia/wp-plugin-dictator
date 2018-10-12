@@ -164,12 +164,21 @@ class Admin {
 			}
 
 			if ( ! empty( $message ) ) {
-				$link = '<br/><br/><a class="button" href="' . admin_url( 'plugins.php?reset_plugins' ) . '">Reset Plugins</a>';
+
+				$url = add_query_arg(
+					[
+						'reset_plugins' => '',
+						'_wpnonce' => wp_create_nonce( 'reset-plugins' ),
+					],
+					admin_url()
+				);
+
 				echo '<div id="plugin-diff-message" class="notice notice-warning"><p>' .
 			     esc_html__( 'WARNING: The plugins active don\'t match what is recommended for this environment.', 'wp-plugin-dictator' ) .
 			     wp_kses_post( $message ) .
-			     $link .
+			     '<br/><br/><a class="button" href="' . esc_url( $url ) . '">' . __( 'Reset Plugins', 'wp-plugin-dictator' ) . '</a>' .
 				'</p></div>';
+
 			}
 		}
 
@@ -184,6 +193,11 @@ class Admin {
 	public function dictate_recommended_plugins() {
 
 		$needs_update = ( isset( $_GET['reset_plugins'] ) ) ? true : false;
+		$nonce = ( ! empty( $_GET['_wpnonce'] ) ) ? $_GET['_wpnonce'] : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'reset-plugins' ) ) {
+			return;
+		}
 
 		if ( true === $needs_update && current_user_can( 'activate_plugins' ) ) {
 

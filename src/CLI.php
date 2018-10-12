@@ -191,7 +191,7 @@ class CLI extends \WP_CLI_Command {
 			return 'active';
 		}
 
-		if ( false !== array_search( $plugin_slug, $this->get_active_plugins() ) ) {
+		if ( false !== array_search( $plugin_slug, $this->get_active_plugins(), true ) ) {
 			return 'active';
 		} else {
 			return 'not active';
