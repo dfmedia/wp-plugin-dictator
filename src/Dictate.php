@@ -362,11 +362,11 @@ class Dictate {
 	public static function register_plugin( $plugin_slug, $settings ) {
 
 		if ( ! empty( $settings['force'] ) && true === $settings['force'] ) {
-			if ( false === array_search( $plugin_slug, self::$required_plugins ) ) {
+			if ( false === array_search( $plugin_slug, self::$required_plugins, true ) ) {
 				self::$required_plugins[] = $plugin_slug;
 			}
 		} else {
-			if ( false === array_search( $plugin_slug, self::$recommended_plugins ) ) {
+			if ( false === array_search( $plugin_slug, self::$recommended_plugins, true ) ) {
 				self::$recommended_plugins[] = $plugin_slug;
 			}
 		}
@@ -384,18 +384,18 @@ class Dictate {
 	public static function deactivate_plugin( $plugin_slug, $force = false ) {
 
 		if ( true === $force ) {
-			if ( empty( self::$deactivated_plugins['required'] ) || false === array_search( $plugin_slug, self::$deactivated_plugins['required'] ) ) {
+			if ( empty( self::$deactivated_plugins['required'] ) || false === array_search( $plugin_slug, self::$deactivated_plugins['required'], true ) ) {
 				self::$deactivated_plugins['required'][] = $plugin_slug;
 			}
 		} else {
-			if ( empty( self::$deactivated_plugins['recommended'] ) || false === array_search( $plugin_slug, self::$deactivated_plugins['recommended'] ) ) {
+			if ( empty( self::$deactivated_plugins['recommended'] ) || false === array_search( $plugin_slug, self::$deactivated_plugins['recommended'], true ) ) {
 				self::$deactivated_plugins['recommended'][] = $plugin_slug;
 			}
 		}
 
-		if ( false !== ( $key = array_search( $plugin_slug, self::$required_plugins ) ) ) {
+		if ( false !== ( $key = array_search( $plugin_slug, self::$required_plugins, true ) ) ) {
 			unset( self::$required_plugins[ $key ] );
-		} else if ( false !== ( $key = array_search( $plugin_slug, self::$recommended_plugins ) ) ) {
+		} else if ( false !== ( $key = array_search( $plugin_slug, self::$recommended_plugins, true ) ) ) {
 			unset( self::$recommended_plugins[ $key ] );
 		}
 
