@@ -170,13 +170,13 @@ class Admin {
 						'reset_plugins' => '',
 						'_wpnonce' => wp_create_nonce( 'reset-plugins' ),
 					],
-					admin_url()
+					admin_url( 'plugins.php' )
 				);
 
 				echo '<div id="plugin-diff-message" class="notice notice-warning"><p>' .
-			     esc_html__( 'WARNING: The plugins active don\'t match what is recommended for this environment.', 'wp-plugin-dictator' ) .
-			     wp_kses_post( $message ) .
-			     '<br/><br/><a class="button" href="' . esc_url( $url ) . '">' . __( 'Reset Plugins', 'wp-plugin-dictator' ) . '</a>' .
+				esc_html__( 'WARNING: The plugins active don\'t match what is recommended for this environment.', 'wp-plugin-dictator' ) .
+				wp_kses_post( $message ) .
+				'<br/><br/><a class="button" href="' . esc_url( $url ) . '">' . esc_html__( 'Reset Plugins', 'wp-plugin-dictator' ) . '</a>' .
 				'</p></div>';
 
 			}
@@ -204,6 +204,8 @@ class Admin {
 			Dictate::reset_plugins();
 
 		}
+
+		header("Refresh:0; url=" . admin_url( 'plugins.php' ) );
 
 	}
 

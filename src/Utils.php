@@ -75,9 +75,9 @@ class Utils {
 	 */
 	public static function get_config_for_plugin( $plugin_slug, $path = '' ) {
 
-		$plugin_slug_parts = explode( $plugin_slug, '/' );
+		$plugin_slug_parts = explode( '/', $plugin_slug );
 
-		if ( empty( $plugin_slug_parts ) ) {
+		if ( empty( $plugin_slug_parts[0] ) ) {
 			return '';
 		}
 

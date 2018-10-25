@@ -89,14 +89,15 @@ class Dictate {
 		$this->default_priority = apply_filters( 'wp_plugin_dictator_default_custom_path_priority', 1 );
 
 		$this->get_general_configs();
-		$this->get_plugin_configs();
-		$this->dictate_plugin_loading();
 
 		/**
 		 * Fires after the initial plugin configs have been consumed and built. At this point you
 		 * can add your own plugins to require or recommend for the environment.
 		 */
 		do_action( 'wp_plugin_dictator_after_default_configs_built' );
+
+		$this->get_plugin_configs();
+		$this->dictate_plugin_loading();
 
 		/**
 		 * Where the magic happens
@@ -338,8 +339,10 @@ class Dictate {
 
 			$dictated_plugins = array_unique( array_merge( $plugins, self::$required_plugins ) );
 
-			if ( ! empty( self::$deactivated_plugins ) ) {
+			if ( ! empty( self::$deactivated_plugins ) && ! empty( $dictated_plugins ) && is_array( $dictated_plugins ) ) {
 				$dictated_plugins = array_diff( $dictated_plugins, self::$deactivated_plugins );
+			} else {
+				$dictated_plugins = [];
 			}
 
 			self::$dictated_plugins = $dictated_plugins;
