@@ -458,7 +458,7 @@ class Dictate {
 	 */
 	public function load_custom_path_plugins( $now = false, $slice = 0 ) {
 
-		if ( false === $now ) {
+		if ( true !== $now ) {
 			switch ( current_action() ) {
 				case 'muplugins_loaded':
 					$slice = 0;
