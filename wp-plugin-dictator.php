@@ -160,4 +160,6 @@ function wp_plugin_dictator_init() {
 }
 
 // Activate as early as possible, since this controls what plugins should/shouldn't be active, it needs to run before plugins are loaded.
-wp_plugin_dictator_init();
+if ( ! wp_installing() ) {
+	wp_plugin_dictator_init();
+}
