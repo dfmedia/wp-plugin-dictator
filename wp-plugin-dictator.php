@@ -6,7 +6,7 @@
  * Author:          Ryan Kanner, Digital First Media
  * Text Domain:     wp-plugin-dictator
  * Domain Path:     /languages
- * Version:         1.0.0
+ * Version:         1.0.1
  *
  * @package         WP_Plugin_Dictator
  */
@@ -160,4 +160,6 @@ function wp_plugin_dictator_init() {
 }
 
 // Activate as early as possible, since this controls what plugins should/shouldn't be active, it needs to run before plugins are loaded.
-wp_plugin_dictator_init();
+if ( ! wp_installing() ) {
+	wp_plugin_dictator_init();
+}
