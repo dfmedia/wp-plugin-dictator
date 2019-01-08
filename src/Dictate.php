@@ -344,10 +344,10 @@ class Dictate {
 
 			$deactivated_plugins = array_merge( $required_deactivated_plugins, $recommended_deactivated_plugins );
 
-			if ( ! empty( $deactivated_plugins ) && ! empty( $dictated_plugins ) ) {
+			if ( ! empty( $dictated_plugins ) ) {
 				$dictated_plugins = array_diff( $dictated_plugins, $deactivated_plugins );
 			} else {
-				$dictated_plugins = [];
+				$dictated_plugins = $plugins;
 			}
 
 			self::$dictated_plugins = $dictated_plugins;
