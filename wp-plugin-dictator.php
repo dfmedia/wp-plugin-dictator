@@ -6,7 +6,7 @@
  * Author:          Ryan Kanner, Digital First Media
  * Text Domain:     wp-plugin-dictator
  * Domain Path:     /languages
- * Version:         1.0.1
+ * Version:         1.0.2
  *
  * @package         WP_Plugin_Dictator
  */
