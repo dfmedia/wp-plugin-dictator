@@ -338,11 +338,7 @@ class Dictate {
 		if ( empty( self::$dictated_plugins ) ) {
 
 			$dictated_plugins = array_unique( array_merge( $plugins, self::$required_plugins ) );
-
-			$required_deactivated_plugins = ( ! empty( self::$deactivated_plugins['required'] ) ) ? self::$deactivated_plugins['required'] : [];
-			$recommended_deactivated_plugins = ( ! empty( self::$deactivated_plugins['recommended'] ) ) ? self::$deactivated_plugins['recommended'] : [];
-
-			$deactivated_plugins = array_merge( $required_deactivated_plugins, $recommended_deactivated_plugins );
+			$deactivated_plugins = ( ! empty( self::$deactivated_plugins['required'] ) ) ? self::$deactivated_plugins['required'] : [];
 
 			if ( ! empty( $dictated_plugins ) ) {
 				$dictated_plugins = array_diff( $dictated_plugins, $deactivated_plugins );
